@@ -1,0 +1,34 @@
+﻿@model ASPtercertrimestre.Models.usuariorol
+
+@{
+    ViewBag.Title = "Detalles";
+}
+
+<h2>Detalles</h2>
+
+<div>
+    <h4>Usuario_Rol</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            Usuario:
+        </dt>
+
+        <dd>
+            ASPtercertrimestre.Controllers.UsuarioRolController.NombreUsuario(Model.idUsuario)
+        </dd>
+
+        <dt>
+            Rol:
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.idRol)
+        </dd>
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Editar", "Edit", new { id = Model.id }) |
+    @Html.ActionLink("Ver todo", "Index")
+</p>

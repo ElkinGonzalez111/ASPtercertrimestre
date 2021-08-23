@@ -18,6 +18,22 @@ namespace ASPtercertrimestre.Controllers
             }
         }
 
+        public static string NombreProducto(int idProducto)
+        {
+            using (var db = new inventarioo2021Entities())
+            {
+                return db.producto.Find(idProducto).nombre;
+            }
+        }
+
+        public ActionResult ListarProducto()
+        {
+            using (var db = new inventarioo2021Entities())
+            {
+                return PartialView(db.producto.ToList());
+            }
+        }
+
         public ActionResult Create()
         {
             return View();
@@ -25,7 +41,6 @@ namespace ASPtercertrimestre.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public ActionResult Create(producto_compra producto_Compra)
         {
             if (!ModelState.IsValid)
@@ -42,82 +57,71 @@ namespace ASPtercertrimestre.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "error " + ex);
+                ModelState.AddModelError("", "error" + ex);
                 return View();
             }
-
         }
 
         public ActionResult Details(int id)
         {
             using (var db = new inventarioo2021Entities())
             {
-                var findUser = db.producto_compra.Find(id);
-                return View(findUser);
-            }
-
-        }
-
-        public ActionResult Delete(int id)
-
-
-        {
-            try
-            {
-                using (var db = new inventarioo2021Entities())
-                {
-                    var finUser = db.producto_compra.Find(id);
-                    db.producto_compra.Remove(finUser);
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
-                }
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", "error " + ex);
-                return View();
+                return View(db.producto_compra.Find(id));
             }
         }
 
         public ActionResult Edit(int id)
-
-
         {
             try
             {
                 using (var db = new inventarioo2021Entities())
                 {
-                    producto_compra findUser = db.producto_compra.Where(a => a.id == id).FirstOrDefault();
-                    return View(findUser);
+                    producto_compra producto_CompraEdit = db.producto_compra.Where(a => a.id == id).FirstOrDefault();
+                    return View(producto_CompraEdit);
                 }
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "error " + ex);
+                ModelState.AddModelError("", "error" + ex);
                 return View();
             }
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-
-        public ActionResult Edit(producto_compra editUser)
+        public ActionResult Edit(producto_compra producto_CompraEdit)
         {
             try
             {
                 using (var db = new inventarioo2021Entities())
                 {
-                    producto_compra user = db.producto_compra.Find(editUser.id);
+                    producto_compra oldproducto_Compra = db.producto_compra.Find(producto_CompraEdit.id);
 
-                    user.id = editUser.id;
-                    user.id_compra = editUser.id_compra;
-                    user.id_producto = editUser.id_producto;
-                    user.cantidad = editUser.cantidad;
+                    oldproducto_Compra.id_compra = producto_CompraEdit.id_compra;
+                    oldproducto_Compra.id_producto = producto_CompraEdit.id_producto;
+                    oldproducto_Compra.cantidad = producto_CompraEdit.cantidad;
 
                     db.SaveChanges();
                     return RedirectToAction("Index");
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "error" + ex);
+                return View();
+            }
+        }
 
+        public ActionResult Delete(int id)
+        {
+            try
+            {
+                using (var db = new inventarioo2021Entities())
+                {
+                    producto_compra producto_Compra = db.producto_compra.Find(id);
+                    db.producto_compra.Remove(producto_Compra);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
                 }
             }
             catch (Exception ex)

@@ -23,9 +23,9 @@ namespace ASPtercertrimestre.Controllers
             return View();
         }
 
+
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public ActionResult Create(roles roles)
         {
             if (!ModelState.IsValid)
@@ -42,58 +42,52 @@ namespace ASPtercertrimestre.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "error " + ex);
+                ModelState.AddModelError("", "error" + ex);
                 return View();
             }
-
         }
 
         public ActionResult Details(int id)
         {
             using (var db = new inventarioo2021Entities())
             {
-                var findUser = db.roles.Find(id);
-                return View(findUser);
+                var findRol = db.roles.Find(id);
+                return View(findRol);
             }
-
         }
 
         public ActionResult Delete(int id)
-
-
         {
             try
             {
                 using (var db = new inventarioo2021Entities())
                 {
-                    var finUser = db.roles.Find(id);
-                    db.roles.Remove(finUser);
+                    var findRol = db.roles.Find(id);
+                    db.roles.Remove(findRol);
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "error " + ex);
+                ModelState.AddModelError("", "error" + ex);
                 return View();
             }
         }
 
         public ActionResult Edit(int id)
-
-
         {
             try
             {
                 using (var db = new inventarioo2021Entities())
                 {
-                    roles findUser = db.roles.Where(a => a.id == id).FirstOrDefault();
-                    return View(findUser);
+                    roles findRol = db.roles.Where(a => a.id == id).FirstOrDefault();
+                    return View(findRol);
                 }
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "error " + ex);
+                ModelState.AddModelError("", "error" + ex);
                 return View();
             }
         }
@@ -101,21 +95,18 @@ namespace ASPtercertrimestre.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-
-        public ActionResult Edit(roles editUser)
+        public ActionResult Edit(roles editRol)
         {
             try
             {
                 using (var db = new inventarioo2021Entities())
                 {
-                    roles user = db.roles.Find(editUser.id);
+                    roles rol = db.roles.Find(editRol.id);
 
-                    user.id = editUser.id;
-                    user.descripcion = editUser.descripcion;
+                    rol.descripcion = editRol.descripcion;
 
                     db.SaveChanges();
                     return RedirectToAction("Index");
-
                 }
             }
             catch (Exception ex)

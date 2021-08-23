@@ -18,6 +18,22 @@ namespace ASPtercertrimestre.Controllers
             }
         }
 
+        public static string NombreProveedor(int idProveedor)
+        {
+            using (var db = new inventarioo2021Entities())
+            {
+                return db.proveedor.Find(idProveedor).nombre;
+            }
+        }
+
+        public ActionResult ListarProveedores()
+        {
+            using (var db = new inventarioo2021Entities())
+            {
+                return PartialView(db.proveedor.ToList());
+            }
+        }
+
         public ActionResult Create()
         {
             return View();
@@ -25,7 +41,6 @@ namespace ASPtercertrimestre.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public ActionResult Create(producto producto)
         {
             if (!ModelState.IsValid)
@@ -42,91 +57,12 @@ namespace ASPtercertrimestre.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "error " + ex);
-                return View();
-            }
-
-        }
-
-        public ActionResult Details(int id)
-        {
-            using (var db = new inventarioo2021Entities())
-            {
-                var findUser = db.producto.Find(id);
-                return View(findUser);
-            }
-
-        }
-
-        public ActionResult Delete(int id)
-
-
-        {
-            try
-            {
-                using (var db = new inventarioo2021Entities())
-                {
-                    var finUser = db.producto.Find(id);
-                    db.producto.Remove(finUser);
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
-                }
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", "error " + ex);
-                return View();
-            }
-        }
-
-        public ActionResult Edit(int id)
-
-
-        {
-            try
-            {
-                using (var db = new inventarioo2021Entities())
-                {
-                    producto findUser = db.producto.Where(a => a.id == id).FirstOrDefault();
-                    return View(findUser);
-                }
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", "error " + ex);
-                return View();
-            }
-        }
-
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-
-        public ActionResult Edit(producto editUser)
-        {
-            try
-            {
-                using (var db = new inventarioo2021Entities())
-                {
-                    producto user = db.producto.Find(editUser.id);
-
-                    user.nombre = editUser.nombre;
-                    user.id = editUser.id;
-                    user.percio_unitario = editUser.percio_unitario;
-                    user.descripcion = editUser.descripcion;
-                    user.cantidad = editUser.cantidad;
-                    user.id_proveedor = editUser.id_proveedor;
-
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
-
-                }
-            }
-            catch (Exception ex)
-            {
                 ModelState.AddModelError("", "error" + ex);
                 return View();
             }
         }
+
+
+
     }
 }

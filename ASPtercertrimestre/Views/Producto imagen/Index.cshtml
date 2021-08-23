@@ -1,10 +1,10 @@
-﻿@model IEnumerable<ASPtercertrimestre.Models.compra>
+﻿@model IEnumerable<ASPtercertrimestre.Models.producto_imagen>
 
 @{
-    ViewBag.Title = "Lista-Compra";
+    ViewBag.Title = "Producto_Imagen";
 }
 
-<h2>Lista de Compras</h2>
+<h2>Producto imagen</h2>
 
 <p>
     @Html.ActionLink("Crear Nuevo", "Create")
@@ -12,16 +12,10 @@
 <table class="table">
     <tr>
         <th>
-            Fecha
+            Imagen
         </th>
         <th>
-            Total
-        </th>
-        <th>
-            Usuario
-        </th>
-        <th>
-            Id cliente
+            Producto
         </th>
         <th></th>
     </tr>
@@ -30,16 +24,10 @@
     {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.fecha)
+                @Html.DisplayFor(modelItem => item.imagen)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.total)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.id_usuario)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.id_cliente)
+                @Html.DisplayFor(modelItem => item.id_producto)
             </td>
             <td>
                 @Html.ActionLink("Editar", "Edit", new { id = item.id }) |
@@ -60,4 +48,3 @@
         })
     </script>
 }
-
