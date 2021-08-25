@@ -7,7 +7,7 @@ using ASPtercertrimestre.Models;
 
 namespace ASPtercertrimestre.Controllers
 {
-    public class ProductocompraController : Controller
+    public class ProductoCompraController : Controller
     {
         // GET: Productocompra
         public ActionResult Index()
@@ -31,6 +31,14 @@ namespace ASPtercertrimestre.Controllers
             using (var db = new inventarioo2021Entities())
             {
                 return PartialView(db.producto.ToList());
+            }
+        }
+
+        public ActionResult ListarCompra()
+        {
+            using (var db = new inventarioo2021Entities())
+            {
+                return PartialView(db.compra.ToList());
             }
         }
 

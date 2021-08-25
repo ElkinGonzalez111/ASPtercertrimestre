@@ -4,7 +4,7 @@
     ViewBag.Title = "Registrar-Compra";
 }
 
-<h2>Registrar</h2>
+<h2>Registrar Compra</h2>
 
 @using (Html.BeginForm()) 
 {
@@ -31,7 +31,7 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-2" for="id usuario">Id usuario:</label>
+            <label class="control-label col-md-2" for="id_usuario">Usuario:</label>
             <div class="col-md-10">
                 @Html.Action("ListarUsuario")
                 @Html.ValidationMessageFor(model => model.id_usuario, "", new { @class = "text-danger" })
@@ -39,7 +39,7 @@
         </div>
 
         <div class="form-group">
-            <label class="control-label col-md-2" for="cliente">Id cliente:</label>
+            <label class="control-label col-md-2" for="id_cliente">Cliente:</label>
             <div class="col-md-10">
                 @Html.Action("ListarCliente")
                 @Html.ValidationMessageFor(model => model.id_cliente, "", new { @class = "text-danger" })

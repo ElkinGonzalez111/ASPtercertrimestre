@@ -7,7 +7,7 @@ using ASPtercertrimestre.Models;
 
 namespace ASPtercertrimestre.Controllers
 {
-    public class UsuariorolController : Controller
+    public class UsuarioRolController : Controller
     {
         // GET: Usuariorol
         public ActionResult Index()

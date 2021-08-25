@@ -40,8 +40,13 @@
                         <li>@Html.ActionLink("Roles crud", "Index", "Roles")</li>
                         <li>@Html.ActionLink("Usuario_Rol crud", "Index", "Usuariorol")</li>
                     </ul>
+                        </li>
+                    @if (User.Identity.IsAuthenticated)
+                     {
+                        <li>@Html.ActionLink("Cerrar Sesion", "CloseSession", "Usuario")</li>
+                     }
 
-                  
+
                 </ul>
             </div>
         </div>

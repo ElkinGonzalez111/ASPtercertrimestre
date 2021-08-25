@@ -7,7 +7,7 @@ using ASPtercertrimestre.Models;
 
 namespace ASPtercertrimestre.Controllers
 {
-    public class ProductoimagenController : Controller
+    public class ProductoImagenController : Controller
     {
         // GET: Productoimagen
         public ActionResult Index()
