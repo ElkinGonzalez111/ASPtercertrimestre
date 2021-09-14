@@ -6,12 +6,12 @@ using System.Web.Mvc;
 using ASPtercertrimestre.Models;
 using System.Web.Security;
 using System.Text;
-using System.Web.Security;
 
 namespace ASPtercertrimestre.Controllers
 {
     public class UsuarioController : Controller
     {
+        [Authorize]
         // GET: Usuario
         public ActionResult Index()
         {
@@ -28,7 +28,6 @@ namespace ASPtercertrimestre.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public ActionResult Create(usuario usuario)
         {
             if (!ModelState.IsValid)
@@ -39,15 +38,16 @@ namespace ASPtercertrimestre.Controllers
                 using (var db = new inventarioo2021Entities())
                 {
                     usuario.password = UsuarioController.HashSHA1(usuario.password);
+                    db.usuario.Add(usuario);
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
-            }catch(Exception ex)
+            }
+            catch (Exception ex)
             {
-                ModelState.AddModelError("", "error " + ex);
+                ModelState.AddModelError("", "error" + ex);
                 return View();
             }
-
         }
 
         public static string HashSHA1(string value)
@@ -65,83 +65,34 @@ namespace ASPtercertrimestre.Controllers
         }
 
         public ActionResult Details(int id)
-        { 
+        {
             using (var db = new inventarioo2021Entities())
             {
-               var findUser = db.usuario.Find(id);
-               return View(findUser);
+                var findUser = db.usuario.Find(id);
+                return View(findUser);
             }
-
         }
 
-        public ActionResult Login(string mensaje = "")
-        {
-            ViewBag.Message = mensaje;
-            return View();
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-
-        public ActionResult Login(string user, string password)
+        public ActionResult Delete(int id)
         {
             try
             {
-                string passEncrip = UsuarioController.HashSHA1(password);
                 using (var db = new inventarioo2021Entities())
                 {
-                    var userLogin = db.usuario.FirstOrDefault(e => e.email == user && e.password == passEncrip);
-                    if(userLogin != null)
-                    {
-                        FormsAuthentication.SetAuthCookie(userLogin.email, true);
-                        Session["User"] = userLogin;
-                        return RedirectToAction("Index");
-                    }
-                    else
-                    {
-                        return Login("Verifique sus datos");
-                    }
+                    var findUser = db.usuario.Find(id);
+                    db.usuario.Remove(findUser);
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
                 }
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "error " + ex);
-                return View();
-            }
-        }
-
-        [Authorize]
-        public ActionResult CloseSession()
-        {
-            FormsAuthentication.SignOut();
-            return RedirectToAction("Index", "Home");
-        }
-
-
-
-        public ActionResult Delete(int id)
-
-
-        {
-            try
-            {
-                using (var db = new inventarioo2021Entities())
-                {
-                    var finUser = db.usuario.Find(id);
-                    db.usuario.Remove(finUser);
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
-                }
-            }catch(Exception ex)
-            {
-                ModelState.AddModelError("", "error " + ex);
+                ModelState.AddModelError("", "error" + ex);
                 return View();
             }
         }
 
         public ActionResult Edit(int id)
-
-
         {
             try
             {
@@ -150,17 +101,17 @@ namespace ASPtercertrimestre.Controllers
                     usuario findUser = db.usuario.Where(a => a.id == id).FirstOrDefault();
                     return View(findUser);
                 }
-            }catch(Exception ex)
+
+            }
+            catch (Exception ex)
             {
-                ModelState.AddModelError("", "error " + ex);
+                ModelState.AddModelError("", "error" + ex);
                 return View();
             }
         }
 
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public ActionResult Edit(usuario editUser)
         {
             try
@@ -172,18 +123,59 @@ namespace ASPtercertrimestre.Controllers
                     user.nombre = editUser.nombre;
                     user.apellido = editUser.apellido;
                     user.email = editUser.email;
-                    user.fecha_nacimiento = editUser.fecha_nacimiento;
                     user.password = editUser.password;
 
                     db.SaveChanges();
                     return RedirectToAction("Index");
-
                 }
-            }catch (Exception ex)
+            }
+            catch (Exception ex)
             {
                 ModelState.AddModelError("", "error" + ex);
                 return View();
             }
+        }
+
+        public ActionResult Login(string mensaje = "")
+        {
+            ViewBag.Message = mensaje;
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Login(string user, string password)
+        {
+            try
+            {
+                string passEncrip = UsuarioController.HashSHA1(password);
+                using (var db = new inventarioo2021Entities())
+                {
+                    var userLogin = db.usuario.FirstOrDefault(e => e.email == user && e.password == passEncrip);
+                    if (userLogin != null)
+                    {
+                        FormsAuthentication.SetAuthCookie(userLogin.email, true);
+                        Session["User"] = userLogin;
+                        return RedirectToAction("Index");
+                    }
+                    else
+                    {
+                        return Login("Usuario o contraseña son incorrectos");
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "error" + ex);
+                return View();
+            }
+        }
+
+        [Authorize]
+        public ActionResult CloseSession()
+        {
+            FormsAuthentication.SignOut();
+            return RedirectToAction("Index", "Home");
         }
     }
 }

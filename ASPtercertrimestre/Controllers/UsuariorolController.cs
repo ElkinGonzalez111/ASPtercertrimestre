@@ -9,7 +9,8 @@ namespace ASPtercertrimestre.Controllers
 {
     public class UsuarioRolController : Controller
     {
-        // GET: Usuariorol
+        [Authorize]
+        // GET: UsuarioRol
         public ActionResult Index()
         {
             using (var db = new inventarioo2021Entities())
@@ -145,7 +146,5 @@ namespace ASPtercertrimestre.Controllers
                 return View();
             }
         }
-
     }
 }
-

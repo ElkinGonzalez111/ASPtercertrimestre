@@ -4,12 +4,14 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using ASPtercertrimestre.Models;
+using Rotativa;
 
 namespace ASPtercertrimestre.Controllers
 {
     public class ProductoCompraController : Controller
     {
-        // GET: Productocompra
+        [Authorize]
+        // GET: ProductoCompra
         public ActionResult Index()
         {
             using (var db = new inventarioo2021Entities())
@@ -137,6 +139,37 @@ namespace ASPtercertrimestre.Controllers
                 ModelState.AddModelError("", "error" + ex);
                 return View();
             }
+        }
+
+        public ActionResult Factura()
+        {
+            try
+            {
+                var db = new inventarioo2021Entities();
+                var query = from tabCliente in db.cliente
+                            join tabCompra in db.compra on tabCliente.id equals tabCompra.id_cliente
+                            join tabProductoCompra in db.producto_compra on tabCompra.id equals tabProductoCompra.id_compra
+                            join tabProducto in db.producto on tabProductoCompra.id_producto equals tabProducto.id
+                            select new Factura
+                            {
+                                nombreCliente = tabCliente.nombre,
+                                documentoCliente = tabCliente.documento,
+                                nombreProducto = tabProducto.nombre,
+                                precioProducto = tabProducto.percio_unitario,
+                                cantidadProducto = tabProducto.cantidad
+                            };
+                return View(query);
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "error" + ex);
+                return View();
+            }
+        }
+
+        public ActionResult PdfFactura()
+        {
+            return new ActionAsPdf("Factura") { FileName = "factura.pdf" };
         }
     }
 }

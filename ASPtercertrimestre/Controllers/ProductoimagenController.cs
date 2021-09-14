@@ -9,7 +9,8 @@ namespace ASPtercertrimestre.Controllers
 {
     public class ProductoImagenController : Controller
     {
-        // GET: Productoimagen
+        [Authorize]
+        // GET: ProductoImagen
         public ActionResult Index()
         {
             using (var db = new inventarioo2021Entities())

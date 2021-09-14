@@ -9,6 +9,7 @@ namespace ASPtercertrimestre.Controllers
 {
     public class ProveedorController : Controller
     {
+        [Authorize]
         // GET: Proveedor
         public ActionResult Index()
         {
@@ -16,7 +17,6 @@ namespace ASPtercertrimestre.Controllers
             {
                 return View(db.proveedor.ToList());
             }
-            
         }
 
         public ActionResult Create()
@@ -26,7 +26,6 @@ namespace ASPtercertrimestre.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-
         public ActionResult Create(proveedor proveedor)
         {
             if (!ModelState.IsValid)
@@ -43,7 +42,7 @@ namespace ASPtercertrimestre.Controllers
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "error " + ex);
+                ModelState.AddModelError("", "error" + ex);
                 return View();
             }
         }
@@ -52,71 +51,38 @@ namespace ASPtercertrimestre.Controllers
         {
             using (var db = new inventarioo2021Entities())
             {
-                var findUser = db.proveedor.Find(id);
-                return View(findUser);
+                var findProv = db.proveedor.Find(id);
+                return View(findProv);
             }
-
         }
 
         public ActionResult Delete(int id)
-
-
         {
             try
             {
                 using (var db = new inventarioo2021Entities())
                 {
-                    var finUser = db.proveedor.Find(id);
-                    db.proveedor.Remove(finUser);
+                    var findProv = db.proveedor.Find(id);
+                    db.proveedor.Remove(findProv);
                     db.SaveChanges();
                     return RedirectToAction("Index");
                 }
             }
             catch (Exception ex)
             {
-                ModelState.AddModelError("", "error " + ex);
+                ModelState.AddModelError("", "error" + ex);
                 return View();
             }
         }
 
         public ActionResult Edit(int id)
-
-
         {
             try
             {
                 using (var db = new inventarioo2021Entities())
                 {
-                    proveedor findUser = db.proveedor.Where(a => a.id == id).FirstOrDefault();
-                    return View(findUser);
-                }
-            }
-            catch (Exception ex)
-            {
-                ModelState.AddModelError("", "error " + ex);
-                return View();
-            }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-
-        public ActionResult Edit(proveedor editUser)
-        {
-            try
-            {
-                using (var db = new inventarioo2021Entities())
-                {
-                    proveedor user = db.proveedor.Find(editUser.id);
-
-                    user.nombre = editUser.nombre;
-                    user.direccion = editUser.direccion;
-                    user.telefono = editUser.telefono;
-                    user.nombre_contacto = editUser.nombre_contacto;
-                   
-
-                    db.SaveChanges();
-                    return RedirectToAction("Index");
+                    proveedor findProv = db.proveedor.Where(a => a.id == id).FirstOrDefault();
+                    return View(findProv);
 
                 }
             }
@@ -127,7 +93,30 @@ namespace ASPtercertrimestre.Controllers
             }
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Edit(proveedor editProv)
+        {
+            try
+            {
+                using (var db = new inventarioo2021Entities())
+                {
+                    proveedor Prov = db.proveedor.Find(editProv.id);
 
+                    Prov.nombre = editProv.nombre;
+                    Prov.direccion = editProv.direccion;
+                    Prov.telefono = editProv.telefono;
+                    Prov.nombre_contacto = editProv.nombre_contacto;
+
+                    db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+            }
+            catch (Exception ex)
+            {
+                ModelState.AddModelError("", "error" + ex);
+                return View();
+            }
+        }
     }
-
 }
