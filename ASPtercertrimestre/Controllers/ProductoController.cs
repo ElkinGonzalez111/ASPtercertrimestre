@@ -6,6 +6,7 @@ using System.Web.Mvc;
 using ASPtercertrimestre.Models;
 using Rotativa;
 
+
 namespace ASPtercertrimestre.Controllers
 {
     public class ProductoController : Controller
